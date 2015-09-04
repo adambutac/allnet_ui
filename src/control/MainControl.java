@@ -156,6 +156,17 @@ public class MainControl {
 		
 	}
 	
+	public class ContactFormCancelListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0){
+			currentView.removeAll();
+			currentView.add(clmp);
+			currentView.revalidate();
+			currentView.repaint();
+			((ContactFormPanel) cfmp.getContent()).reset();
+		}
+	}
+	
 	/* ################ *
 	 * End of Listeners *
 	 * ################ */
@@ -195,6 +206,7 @@ public class MainControl {
 		SearchContactListener searchButtonListener = new SearchContactListener();
 		ContactFormListener textFieldListener = new ContactFormListener();
 		ContactFormSubmitListener submitListener = new ContactFormSubmitListener();
+		ContactFormCancelListener cancelListener = new ContactFormCancelListener();
 		widgetMenu.addAddButtonListener(addButtonListener);
 		widgetMenu.addSearchButtonListener(searchButtonListener);
 		widgetPanel.addContactWidgetListener(widgetListener);
@@ -203,8 +215,8 @@ public class MainControl {
 		formPanel.addFullnameFocusListener(textFieldListener);
 		formPanel.addGroupFocusListener(textFieldListener);
 		formMenu.addSubmitButtonListener(submitListener);
+		formMenu.addCancelButtonListener(cancelListener);
 		/* Set current view to the contact list. */
-		//clmp.switchTo(currentView);
 		currentView.add(clmp);
 		currentView.setPreferredSize(new Dimension(200,400));
 	}
@@ -226,5 +238,6 @@ public class MainControl {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+		System.out.println("Done!");
 	}
 }
