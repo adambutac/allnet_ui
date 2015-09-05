@@ -27,6 +27,23 @@ import view.MainPanel;
 
 public class MainControl {
 	
+	/* A personal note.
+	 * 
+	 *   I am interested in writing clean, readable and
+	 * extensible code. I mention this with my control
+	 * implementation in mind. 
+	 *   As of now, I have laid out a list of classes, 
+	 * each for its own function. I find this code is 
+	 * easier to read.
+	 *   On the other hand, this is not very extensible.
+	 * For every new button or other Action, I create a
+	 * new class to listen for it.
+	 *   And yet, my contact widget listener handles all
+	 * contact widgets. Maybe it is a compromise between
+	 * these two implementations that will make readable,
+	 * clean and extensible code.
+	 * */
+	
 	/* ######################### *
 	 * Begin Listener Class Def. *
 	 * ######################### */
@@ -86,25 +103,8 @@ public class MainControl {
 			currentView.add(cfmp);
 			currentView.revalidate();
 			currentView.repaint();
-			System.out.println("Trying to add...");
+			System.out.println("Switch to new contact form.");
 		}
-		/*
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			ContactListPanel clp = mainPanel.getContactListPanel();
-			Contact c = new Contact();
-			ContactWidget widget = new ContactWidget(c);
-
-			list.addContact(c);
-
-			widget.addMouseListener(new ContactWidgetListener());
-			clp.add(widget);
-			clp.revalidate();
-			clp.repaint();
-			
-			System.out.println("Addded " + c);
-		}
-		*/
 	}
 
 	public class SearchContactListener implements ActionListener{
@@ -126,11 +126,9 @@ public class MainControl {
 		public void focusLost(FocusEvent arg0) {
 			System.out.println(((JTextField)arg0.getSource()).getText() + " lost focus.");
 		}
-		
 	}
 	
 	public class ContactFormSubmitListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			ContactFormPanel cfp = cfmp.getContent();
