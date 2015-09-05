@@ -124,6 +124,7 @@ public class MainControl {
 
 		@Override
 		public void focusLost(FocusEvent arg0) {
+			((JTextField)arg0.getSource()).select(0, 0);
 			System.out.println(((JTextField)arg0.getSource()).getText() + " lost focus.");
 		}
 	}
@@ -132,10 +133,10 @@ public class MainControl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			ContactFormPanel cfp = cfmp.getContent();
-			String sAhra = cfp.getAHRAText();
-			String uname = cfp.getUsernameText();
-			String fname = cfp.getFullnameText();
-			String group = cfp.getGroupText();
+			String sAhra = cfp.getFieldText(Contact.Fields.AHRA);
+			String uname = cfp.getFieldText(Contact.Fields.USER_NAME);
+			String fname = cfp.getFieldText(Contact.Fields.FULL_NAME);
+			String group = cfp.getFieldText(Contact.Fields.GROUP);
 			if(AHRA.validate(sAhra)){
 				AHRA ahra = new AHRA(sAhra);
 				Contact c = new Contact(ahra, group, uname, fname);
@@ -208,10 +209,7 @@ public class MainControl {
 		widgetMenu.addAddButtonListener(addButtonListener);
 		widgetMenu.addSearchButtonListener(searchButtonListener);
 		widgetPanel.addContactWidgetListener(widgetListener);
-		formPanel.addAHRAFocusListener(textFieldListener);
-		formPanel.addUsernameFocusListener(textFieldListener);
-		formPanel.addFullnameFocusListener(textFieldListener);
-		formPanel.addGroupFocusListener(textFieldListener);
+		formPanel.addFormListener(textFieldListener);
 		formMenu.addSubmitButtonListener(submitListener);
 		formMenu.addCancelButtonListener(cancelListener);
 		/* Set current view to the contact list. */

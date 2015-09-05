@@ -13,6 +13,21 @@ import contact.AHRA;
  * @since 08.29.2015
  */
 public class Contact {	
+	public enum Fields{
+		AHRA("AHRA here."), 
+		USER_NAME("User name here."), 
+		FULL_NAME("Full name here."),
+		GROUP("Group here.");
+		
+		String value;
+		private Fields(String s){
+			value = s;
+		}
+		@Override
+		public String toString(){
+			return value;
+		}
+	}
 	
 	private AHRA ahra;
 	private String userName;
