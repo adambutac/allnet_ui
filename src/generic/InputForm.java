@@ -19,6 +19,7 @@ public class InputForm extends JPanel{
 		JTextField field;
 		for(String s: strings){
 			field = new JTextField(s);
+			field.setName(s);
 			fieldMap.put(s, field);
 			this.add(field);
 		}
@@ -30,8 +31,11 @@ public class InputForm extends JPanel{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JTextField field;
+		String display;
 		for(Enum e: enums){
-			field = new JTextField(e.toString());
+			display = e.toString();
+			field = new JTextField(display);
+			field.setName(display);
 			fieldMap.put(e.name(), field);
 			this.add(field);
 		}
@@ -68,8 +72,8 @@ public class InputForm extends JPanel{
 		JTextField field;
 		for(Map.Entry<String, JTextField> 
 				comp: fieldMap.entrySet()){
-			name = comp.getKey();
 			field = comp.getValue();
+			name = field.getName();
 			field.setText(name);
 		}
 	}

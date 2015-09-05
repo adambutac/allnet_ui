@@ -23,6 +23,7 @@ public class Contact {
 		private Fields(String s){
 			value = s;
 		}
+
 		@Override
 		public String toString(){
 			return value;

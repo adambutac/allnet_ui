@@ -36,7 +36,7 @@ public class ContactListPanel extends JPanel{
 			c = comp.getValue();
 			widget = new ContactWidget(c);
 			this.add(widget);
-		}	
+		}
 	}
 	
 	public void addContactWidgetListener(MouseListener l){

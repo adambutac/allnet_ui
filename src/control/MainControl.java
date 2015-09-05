@@ -142,8 +142,8 @@ public class MainControl {
 				Contact c = new Contact(ahra, group, uname, fname);
 				ContactWidget widget = new ContactWidget(c);
 				widget.addMouseListener(widgetListener);
+				clmp.getContent().add(widget, 0);
 				cList.addContact(c);
-				((ContactListPanel)clmp.getContent()).add(widget);
 				System.out.println("Submit: " + c);
 				currentView.removeAll();
 				currentView.add(clmp);
@@ -200,7 +200,7 @@ public class MainControl {
 		widgetListener = new ContactWidgetListener();
 		/* The rest do not have to be global
 		 * because there will only ever be one instance
-		 * of them (at least at present). */
+		 * of them at present. This may change.*/
 		AddContactListener addButtonListener = new AddContactListener();
 		SearchContactListener searchButtonListener = new SearchContactListener();
 		ContactFormListener textFieldListener = new ContactFormListener();
