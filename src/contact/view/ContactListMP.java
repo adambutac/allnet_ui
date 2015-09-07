@@ -18,10 +18,11 @@ public class ContactListMP  extends MainPanel{
 		super(new ContactListPanel(cl), new ContactListMenu());
 		/* A seperate scroll pane is used 
 		 * to hold the contacts panel. */
+		int scrollSpeed = 16;
 		scrollClp = new JScrollPane(this.content);
 		scrollClp.setPreferredSize(new Dimension(200,325));
 		scrollClp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
+		scrollClp.getVerticalScrollBar().setUnitIncrement(scrollSpeed);;
 		//this.setLayout(new BorderLayout());
 		this.add(scrollClp, BorderLayout.NORTH);
 		this.add(this.menu, BorderLayout.SOUTH);

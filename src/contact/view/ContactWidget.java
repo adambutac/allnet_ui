@@ -15,20 +15,20 @@ public class ContactWidget extends JPanel{
 	private static final long serialVersionUID = -7484468699043821112L;	
 	public static final int HEIGHT = 50;
 	private final Color bg = new Color(255,255,255);
-	private JLabel text;
-	private JLabel icon;
+	//private JLabel text;
+	//private JLabel icon;
 	private UUID id;
 
 	public ContactWidget(Contact c){
 		/* Set variables. */
 		String name = c.getAHRA() + "";
+		JLabel text = new JLabel(name);
+		JLabel icon = new JLabel();
 		ImageIcon img = new ImageIcon("res/images/AllnetLogo_x50.png");
 		Dimension dim = new Dimension(Integer.MAX_VALUE, HEIGHT);
 		
 		/* Set our data. */
 		id = c.getUUID();
-		text = new JLabel(name);
-		icon = new JLabel();
 		icon.setIcon(img);
 		
 		/* Set panel properties. */
@@ -47,8 +47,8 @@ public class ContactWidget extends JPanel{
 		
 		/* Set our data. */
 		id = c.getUUID();
-		text = new JLabel(name);
-		icon = new JLabel();
+		JLabel text = new JLabel(name);
+		JLabel icon = new JLabel();
 		icon.setIcon(img);
 		
 		/* Set panel properties. */

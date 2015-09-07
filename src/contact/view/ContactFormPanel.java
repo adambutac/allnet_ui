@@ -42,7 +42,7 @@ public class ContactFormPanel extends JPanel{
 		return form.getText(e);
 	}
 	
-	public void addFormListener(FocusListener fl){
+	public void addFormFocusListener(FocusListener fl){
 		form.addFocusListener(fl);
 	}
 	

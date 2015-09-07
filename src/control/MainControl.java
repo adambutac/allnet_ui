@@ -85,7 +85,7 @@ public class MainControl {
 			widget.setBackground(c.darker());
 			widget.repaint();
 		}
-
+		
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			ContactWidget widget = (ContactWidget)arg0.getSource();
@@ -96,32 +96,27 @@ public class MainControl {
 	}
 	
 	public class AddContactListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			currentView.removeAll();
-			currentView.add(cfmp);
-			currentView.revalidate();
-			currentView.repaint();
+			switchView(cfmp);
 			System.out.println("Switch to new contact form.");
 		}
 	}
 
 	public class SearchContactListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			switchView(cfmp);
 			System.out.println("Search contact button press.");
 		}
 	}
 	
-	public class ContactFormListener implements FocusListener{
-
+	public class ContactFormFocusListener implements FocusListener{
 		@Override
 		public void focusGained(FocusEvent arg0) {
 			((JTextField)arg0.getSource()).selectAll();
 		}
-
+		
 		@Override
 		public void focusLost(FocusEvent arg0) {
 			((JTextField)arg0.getSource()).select(0, 0);
@@ -133,6 +128,7 @@ public class MainControl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			ContactFormPanel cfp = cfmp.getContent();
+			ContactListPanel cmp = clmp.getContent();
 			String sAhra = cfp.getFieldText(Contact.Fields.AHRA);
 			String uname = cfp.getFieldText(Contact.Fields.USER_NAME);
 			String fname = cfp.getFieldText(Contact.Fields.FULL_NAME);
@@ -142,13 +138,10 @@ public class MainControl {
 				Contact c = new Contact(ahra, group, uname, fname);
 				ContactWidget widget = new ContactWidget(c);
 				widget.addMouseListener(widgetListener);
-				clmp.getContent().add(widget, 0);
+				cmp.add(widget, 0);
 				cList.addContact(c);
 				System.out.println("Submit: " + c);
-				currentView.removeAll();
-				currentView.add(clmp);
-				currentView.revalidate();
-				currentView.repaint();
+				switchView(clmp);
 				((ContactFormPanel) cfmp.getContent()).reset();
 			}
 		}
@@ -158,10 +151,7 @@ public class MainControl {
 	public class ContactFormCancelListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0){
-			currentView.removeAll();
-			currentView.add(clmp);
-			currentView.revalidate();
-			currentView.repaint();
+			switchView(clmp);
 			((ContactFormPanel) cfmp.getContent()).reset();
 		}
 	}
@@ -175,65 +165,109 @@ public class MainControl {
 	/* Define views. */
 	private ContactListMP clmp;
 	private ContactFormMP cfmp;
+	private JPanel mainPanel;
 	private JPanel currentView;
+	/* This is global so it may be referenced in
+	 * one or more of the listener classes. */
 	private ContactWidgetListener widgetListener;
 
 	public MainControl(ContactList cl, JPanel mp){
 		/* Link data. */
 		cList = cl;
 		/* Link main view. */
-		currentView = mp;
+		mainPanel = mp;
 		/* Initialize views. */
+		genBrute();
+		for(String s: bruteList){
+			//System.out.println(s);
+			if(AHRA.validate(s)){
+				cList.addContact(
+					new Contact(
+						new AHRA(s),s,s,s));
+			}
+		}
 		clmp = new ContactListMP(cList);
 		cfmp = new ContactFormMP();
 		
 		/* I had to add a getContent method in the ContactListPanel.class
-		 * because I put the content within a JScrollPane */
+		 * because I put the real content within a JScrollPane. */
 		ContactListPanel widgetPanel = clmp.getContent();
 		ContactListMenu widgetMenu = clmp.getMenu();
 		ContactFormPanel formPanel = cfmp.getContent();
 		ContactFormMenu formMenu = cfmp.getMenu();
 		
 		/* Set listeners. */
-		/* WidgetListener has to be global
-		 * so we can add it to new contacts. */
+		/* WidgetListener has to be global so 
+		 * it can be added to new contact widgets. */
 		widgetListener = new ContactWidgetListener();
 		/* The rest do not have to be global
 		 * because there will only ever be one instance
 		 * of them at present. This may change.*/
 		AddContactListener addButtonListener = new AddContactListener();
 		SearchContactListener searchButtonListener = new SearchContactListener();
-		ContactFormListener textFieldListener = new ContactFormListener();
+		ContactFormFocusListener focusListener = new ContactFormFocusListener();
 		ContactFormSubmitListener submitListener = new ContactFormSubmitListener();
 		ContactFormCancelListener cancelListener = new ContactFormCancelListener();
+		widgetPanel.addContactWidgetListener(widgetListener);
 		widgetMenu.addAddButtonListener(addButtonListener);
 		widgetMenu.addSearchButtonListener(searchButtonListener);
-		widgetPanel.addContactWidgetListener(widgetListener);
-		formPanel.addFormListener(textFieldListener);
+		formPanel.addFormFocusListener(focusListener);
 		formMenu.addSubmitButtonListener(submitListener);
 		formMenu.addCancelButtonListener(cancelListener);
 		/* Set current view to the contact list. */
-		currentView.add(clmp);
-		currentView.setPreferredSize(new Dimension(200,400));
+		currentView = clmp;
+		clmp.setVisible(true);
+		cfmp.setVisible(false);
+		mainPanel.add(clmp);
+		mainPanel.add(cfmp);
+		mainPanel.setPreferredSize(new Dimension(200,400));
+	}
+	
+	private void switchView(JPanel p){
+		currentView.setVisible(false);
+		p.setVisible(true);
+		currentView = p;
+	}
+	
+	private final int LEN = 2;
+	/* BEGIN and END are inclusive. */
+	private final int BEGIN = 0;
+	private final int END = 255;
+	private final int n = END - BEGIN + 1;
+	private String[] bruteList;
+	private int count = 0;
+	
+	private void genBrute(){
+		for(int i = 1; i <= LEN; i++){
+			count += (int)Math.pow(n, i);
+		}
+		bruteList = new String[count];
+		count -= 1;
+		genBrute("");
+	}
+	
+	private String genBrute(String s){
+		if(s.length() == LEN){
+			return s;
+		}
+		for(int i = BEGIN; i <= END; i++){
+			bruteList[count] = s + (char)i;
+			count -= 1;
+			genBrute(s + (char)i);
+		}
+		return s;
 	}
 	
 	public static void main(String[] args){
 		JFrame frame = new JFrame();
 		ContactList list = new ContactList();
-		for(int i = 0; i < 64; i++)
-			list.addContact(new Contact(
-					new AHRA(i + "@"),
-					i+"", i+"", i+""));
-		
 		MainPanel view = new MainPanel();
 		@SuppressWarnings("unused")
 		MainControl ctrl = new MainControl(list, view);
-		
 		frame.add(view);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
-		System.out.println("Done!");
 	}
 }
