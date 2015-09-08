@@ -36,8 +36,7 @@ public class ContactListPanel extends JPanel{
 		for(Map.Entry<UUID, Contact> ent: list.entrySet()){
 			c = ent.getValue();
 			widget = new ContactWidget(c);
-			// This will be interesting later.
-			// widget.setVisible(false);
+						
 			//Contact cont;
 			//int index = 0;
 			//for(Component comp: this.getComponents()){

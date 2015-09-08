@@ -99,12 +99,27 @@ public class Contact {
 		return uid;
 	}
 	
+	public String getField(Fields f){
+		switch(f){
+			case AHRA:
+				return getAHRA().toString();
+			case USER_NAME:
+				return getUserName();
+			case FULL_NAME:
+				return getFullName();
+			case GROUP:
+				return getGroup();
+			default:
+				return null;
+		}
+	}
+	
 	@Override
 	public String toString(){
-		return "UUID="  + uid      + ":" 
-			 + "AHRA="  + ahra     + ":" 
-			 + "User="  + userName + ":"
+		return "User="  + userName + ":"
 			 + "Name="  + fullName + ":"
-			 + "Group=" + group;
+			 + "Group=" + group	   + ":"
+			 + "AHRA="  + ahra     + ":"
+			 + "UUID="  + uid      + ":";
 	}
 }

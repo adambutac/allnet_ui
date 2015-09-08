@@ -201,7 +201,7 @@ public class MainControl {
 		 * it can be added to new contact widgets. */
 		widgetListener = new ContactWidgetListener();
 		/* The rest do not have to be global
-		 * because there will only ever be one instance
+		 * as there will only ever be one instance
 		 * of them at present. This may change.*/
 		AddContactListener addButtonListener = new AddContactListener();
 		SearchContactListener searchButtonListener = new SearchContactListener();
