@@ -3,13 +3,17 @@ package contact.view;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseListener;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import contact.model.Contact;
+import contact.model.Contact.Fields;
 import contact.model.ContactList;
 
 /**
@@ -33,9 +37,21 @@ public class ContactListPanel extends JPanel{
 
 		Contact c;
 		ContactWidget widget;
-		for(Map.Entry<UUID, Contact> ent: list.entrySet()){
-			c = ent.getValue();
-			widget = new ContactWidget(c);
+		Set<String> keySet = list.getFieldKeySet(Fields.AHRA);
+		List<String> keys = new ArrayList<String>(keySet);
+		Collections.sort(keys);
+		System.out.println(keys);
+		for(String key: keys){
+			ArrayList<UUID> uuids = list.getUUIDByField(Fields.AHRA, key);
+			for(UUID id:uuids){
+				c = list.get(id);
+				widget = new ContactWidget(c);
+				this.add(widget);
+			}
+		}
+		//for(Map.Entry<UUID, Contact> ent: list.entrySet()){
+		//	c = ent.getValue();
+		//	widget = new ContactWidget(c);
 						
 			//Contact cont;
 			//int index = 0;
@@ -47,8 +63,8 @@ public class ContactListPanel extends JPanel{
 				//	break;
 			//}
 			
-			this.add(widget);//, index);
-		}
+		//	this.add(widget);//, index);
+		//}
 	}
 	
 	public void addContactWidgetListener(MouseListener l){

@@ -38,9 +38,7 @@ public class AHRA {
 			return false;
 		}
 		
-		/* Set everything to lowercase. */
 		int atCount = 0;
-		address = address.toLowerCase();
 		for(char c: address.toCharArray()){
 			if(SPEC_CHAR_WHITELIST.indexOf(c) < 0){
 				System.out.println("Character \'" + c + "\' is not allowed.");

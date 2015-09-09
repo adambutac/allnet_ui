@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -176,21 +177,13 @@ public class MainControl {
 		cList = cl;
 		/* Link main view. */
 		mainPanel = mp;
-		/* Initialize views. */
+		
 		genBrute();
-		for(String s: bruteList){
-			//System.out.println(s);
-			if(AHRA.validate(s)){
-				cList.addContact(
-					new Contact(
-						new AHRA(s),s,s,s));
-			}
-		}
+		
+		/* Initialize views. */
 		clmp = new ContactListMP(cList);
 		cfmp = new ContactFormMP();
 		
-		/* I had to add a getContent method in the ContactListPanel.class
-		 * because I put the real content within a JScrollPane. */
 		ContactListPanel widgetPanel = clmp.getContent();
 		ContactListMenu widgetMenu = clmp.getMenu();
 		ContactFormPanel formPanel = cfmp.getContent();
@@ -229,10 +222,10 @@ public class MainControl {
 		currentView = p;
 	}
 	
-	private final int LEN = 2;
+	private final int LEN = 3;
 	/* BEGIN and END are inclusive. */
-	private final int BEGIN = 0;
-	private final int END = 255;
+	private final int BEGIN = '0';
+	private final int END = 'z';
 	private final int n = END - BEGIN + 1;
 	private String[] bruteList;
 	private int count = 0;
@@ -244,6 +237,14 @@ public class MainControl {
 		bruteList = new String[count];
 		count -= 1;
 		genBrute("");
+		for(String s: bruteList){
+			//System.out.println(s);
+			if(AHRA.validate(s)){
+				cList.addContact(
+					new Contact(
+						new AHRA(s),s,s,s));
+			}
+		}
 	}
 	
 	private String genBrute(String s){
@@ -258,16 +259,23 @@ public class MainControl {
 		return s;
 	}
 	
+	public int getBruteLen(){
+		return bruteList.length;
+	}
+	
 	public static void main(String[] args){
 		JFrame frame = new JFrame();
 		ContactList list = new ContactList();
 		MainPanel view = new MainPanel();
-		@SuppressWarnings("unused")
 		MainControl ctrl = new MainControl(list, view);
 		frame.add(view);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
+		ImageIcon ii = new ImageIcon("res/images/AllnetLogo.png");
+		frame.setIconImage(ii.getImage());
 		frame.setVisible(true);
+		System.out.println("Created " + list.size() + " contacts out of " 
+			+ ctrl.getBruteLen() + " generated values.");
 	}
 }

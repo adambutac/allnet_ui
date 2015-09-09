@@ -17,8 +17,8 @@ public class Contact {
 		AHRA("AHRA here."), 
 		USER_NAME("User name here."), 
 		FULL_NAME("Full name here."),
-		GROUP("Group here.");
-		
+		GROUP("Group here."),
+		PHONE("Phone #");
 		String value;
 		private Fields(String s){
 			value = s;
@@ -35,7 +35,7 @@ public class Contact {
 	private String fullName;
 	private String group;
 	private UUID uid;
-	
+	private String phoneNum;
 	/**
 	 * Creates a default contact. This should only be used
 	 * for testing. Please use the other constructor for
@@ -45,9 +45,10 @@ public class Contact {
 	public Contact(){
 		fullName = "Default D. Default";
 		userName = "xxDefaultxx";
-		ahra = new AHRA("defaultAHRA@");
+		ahra = new AHRA("default_ahra@");
 		group = "default";	
 		uid = UUID.randomUUID();
+		phoneNum = "808-123-4567";
 	}
 		
 	/**
@@ -61,6 +62,7 @@ public class Contact {
 		userName = un;
 		fullName = fn;			
 		uid = UUID.randomUUID();
+		phoneNum = "";
 	}
 
 	public void setAHRA(AHRA addr){
@@ -99,16 +101,22 @@ public class Contact {
 		return uid;
 	}
 	
+	public String getPhoneNumber(){
+		return phoneNum;
+	}
+	
 	public String getField(Fields f){
 		switch(f){
 			case AHRA:
-				return getAHRA().toString();
+				return ahra.toString();
 			case USER_NAME:
-				return getUserName();
+				return userName;
 			case FULL_NAME:
-				return getFullName();
+				return fullName;
 			case GROUP:
-				return getGroup();
+				return group;
+			case PHONE:
+				return phoneNum;
 			default:
 				return null;
 		}
@@ -116,10 +124,12 @@ public class Contact {
 	
 	@Override
 	public String toString(){
-		return "User="  + userName + ":"
-			 + "Name="  + fullName + ":"
-			 + "Group=" + group	   + ":"
-			 + "AHRA="  + ahra     + ":"
-			 + "UUID="  + uid      + ":";
+		String sep = "&";
+		return "User="  + userName + sep
+			 + "Name="  + fullName + sep
+			 + "Group=" + group	   + sep
+			 + "AHRA="  + ahra     + sep
+			 + "UUID="  + uid      + sep
+			 + "Phone=" + phoneNum;
 	}
 }
