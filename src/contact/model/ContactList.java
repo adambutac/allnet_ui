@@ -89,7 +89,7 @@ public class ContactList extends HashMap<UUID, Contact>{
 	public static void main(String[] args){
 		ContactList list = new ContactList();
 		Fields field = Fields.PHONE;
-		String key = "";//"808-123-4567";
+		String key = "808-123-4567";
 		for(int i = 0; i < 500; i++)	
 			list.addContact(new Contact());
 		
