@@ -1,11 +1,11 @@
-package contact.model;
+package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import contact.model.Contact.Fields;
-import contact.model.ContactLookupTable.FieldMap;
+import model.Contact.Fields;
+import model.ContactLookupTable.FieldMap;
 
 /**
  * Each field has a HashMap<String key, ArrayList<UUID> value>.

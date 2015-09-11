@@ -1,4 +1,4 @@
-package contact.view;
+package view.contactform;
 
 import javax.swing.JFrame;
 

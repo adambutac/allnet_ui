@@ -1,4 +1,4 @@
-package contact.view;
+package view.contactlist;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,11 +14,11 @@ public class ContactListMenu extends MenuPanel{
 	private JButton search;
 	
 	public ContactListMenu(){
-		Dimension size = new Dimension(60,30);
+		Dimension bSize = new Dimension(60,30);
 		add = this.getDefaultButton("+");
 		search = this.getDefaultButton("Q");
-		add.setPreferredSize(size);
-		search.setPreferredSize(size);
+		add.setPreferredSize(bSize);
+		search.setPreferredSize(bSize);
 		this.setLayout(new BorderLayout());
 		this.add(add, BorderLayout.EAST);
 		this.add(search,BorderLayout.WEST);

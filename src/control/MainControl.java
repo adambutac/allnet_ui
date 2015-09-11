@@ -1,6 +1,5 @@
 package control;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,17 +13,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import contact.AHRA;
-import contact.model.Contact;
-import contact.model.ContactList;
-import contact.view.ContactFormMP;
-import contact.view.ContactFormMenu;
-import contact.view.ContactFormPanel;
-import contact.view.ContactListMP;
-import contact.view.ContactListMenu;
-import contact.view.ContactListPanel;
-import contact.view.ContactWidget;
+import model.AHRA;
+import model.Contact;
+import model.Contact.Fields;
+import model.ContactList;
 import view.MainPanel;
+import view.contactform.ContactFormMP;
+import view.contactform.ContactFormMenu;
+import view.contactform.ContactFormPanel;
+import view.contactlist.ContactListMP;
+import view.contactlist.ContactListMenu;
+import view.contactlist.ContactListPanel;
+import view.contactlist.ContactWidget;
 
 public class MainControl {
 	
@@ -52,47 +52,36 @@ public class MainControl {
 	class ContactWidgetListener implements MouseListener{
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			ContactWidget widget = (ContactWidget)arg0.getComponent();
-			ContactListPanel clp = clmp.getContent();
-			
-			clp.remove(widget);
-			clp.revalidate();
-			clp.repaint();
-			
-			Contact c = cList.removeContact(widget.getUUID());
-			System.out.println("Removed " + c);
+			//ContactWidget widget = (ContactWidget)arg0.getComponent();
+			//Contact c = cList.get(widget.getUUID());
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
 			ContactWidget widget = (ContactWidget)arg0.getSource();
-			Color c = widget.getBackground();
-			widget.setBackground(c.darker());
-			widget.repaint();
+			widget.highlight(true);
+			//System.out.println("Mouse entered.");
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0) {
 			ContactWidget widget = (ContactWidget)arg0.getSource();
-			Color c = widget.getBackground();
-			widget.setBackground(c.brighter());
-			widget.repaint();
+			widget.highlight(false);
+			//System.out.println("Mouse exited.");
 		}
 
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			ContactWidget widget = (ContactWidget)arg0.getSource();
-			Color c = widget.getBackground();
-			widget.setBackground(c.darker());
-			widget.repaint();
+			widget.pressed(true);
+			//System.out.println("Mouse pressed.");
 		}
 		
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
 			ContactWidget widget = (ContactWidget)arg0.getSource();
-			Color c = widget.getBackground();
-			widget.setBackground(c.brighter());
-			widget.repaint();
+			widget.pressed(false);
+			//System.out.println("Mouse released.");
 		}
 	}
 	
@@ -100,7 +89,7 @@ public class MainControl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			switchView(cfmp);
-			System.out.println("Switch to new contact form.");
+			//System.out.println("Switch to new contact form.");
 		}
 	}
 
@@ -108,7 +97,7 @@ public class MainControl {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switchView(cfmp);
-			System.out.println("Search contact button press.");
+			//System.out.println("Search contact button press.");
 		}
 	}
 	
@@ -121,7 +110,7 @@ public class MainControl {
 		@Override
 		public void focusLost(FocusEvent arg0) {
 			((JTextField)arg0.getSource()).select(0, 0);
-			System.out.println(((JTextField)arg0.getSource()).getText() + " lost focus.");
+			//System.out.println(((JTextField)arg0.getSource()).getText() + " lost focus.");
 		}
 	}
 	
@@ -129,7 +118,7 @@ public class MainControl {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			ContactFormPanel cfp = cfmp.getContent();
-			ContactListPanel cmp = clmp.getContent();
+			ContactListPanel clp = clmp.getContent();
 			String sAhra = cfp.getFieldText(Contact.Fields.AHRA);
 			String uname = cfp.getFieldText(Contact.Fields.USER_NAME);
 			String fname = cfp.getFieldText(Contact.Fields.FULL_NAME);
@@ -137,13 +126,17 @@ public class MainControl {
 			if(AHRA.validate(sAhra)){
 				AHRA ahra = new AHRA(sAhra);
 				Contact c = new Contact(ahra, group, uname, fname);
-				ContactWidget widget = new ContactWidget(c);
-				widget.addMouseListener(widgetListener);
-				cmp.add(widget, 0);
 				cList.addContact(c);
+				final ContactWidget widget = clp.addContact(c, Fields.AHRA);
 				System.out.println("Submit: " + c);
 				switchView(clmp);
 				((ContactFormPanel) cfmp.getContent()).reset();
+				(new Thread(){
+					@Override
+					public void run(){
+						widget.animateAdd();	
+					}
+				}).start();
 			}
 		}
 		
@@ -168,9 +161,6 @@ public class MainControl {
 	private ContactFormMP cfmp;
 	private JPanel mainPanel;
 	private JPanel currentView;
-	/* This is global so it may be referenced in
-	 * one or more of the listener classes. */
-	private ContactWidgetListener widgetListener;
 
 	public MainControl(ContactList cl, JPanel mp){
 		/* Link data. */
@@ -190,12 +180,10 @@ public class MainControl {
 		ContactFormMenu formMenu = cfmp.getMenu();
 		
 		/* Set listeners. */
-		/* WidgetListener has to be global so 
-		 * it can be added to new contact widgets. */
-		widgetListener = new ContactWidgetListener();
-		/* The rest do not have to be global
-		 * as there will only ever be one instance
-		 * of them at present. This may change.*/
+		/* WidgetListener is no longer global.
+		 * ContactWidget now has a reference
+		 * which is set in addContactWidgetlistener() */
+		ContactWidgetListener widgetListener = new ContactWidgetListener();
 		AddContactListener addButtonListener = new AddContactListener();
 		SearchContactListener searchButtonListener = new SearchContactListener();
 		ContactFormFocusListener focusListener = new ContactFormFocusListener();
@@ -222,7 +210,7 @@ public class MainControl {
 		currentView = p;
 	}
 	
-	private final int LEN = 3;
+	private final int LEN = 2;
 	/* BEGIN and END are inclusive. */
 	private final int BEGIN = '0';
 	private final int END = 'z';
@@ -237,12 +225,14 @@ public class MainControl {
 		bruteList = new String[count];
 		count -= 1;
 		genBrute("");
+		int group = 0;
 		for(String s: bruteList){
 			//System.out.println(s);
 			if(AHRA.validate(s)){
 				cList.addContact(
 					new Contact(
-						new AHRA(s),s,s,s));
+						new AHRA(s),group%3+"",s,s));
+				group++;
 			}
 		}
 	}
@@ -270,6 +260,7 @@ public class MainControl {
 		MainControl ctrl = new MainControl(list, view);
 		frame.add(view);
 		frame.setResizable(false);
+		frame.setPreferredSize(new Dimension(800,400));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		ImageIcon ii = new ImageIcon("res/images/AllnetLogo.png");

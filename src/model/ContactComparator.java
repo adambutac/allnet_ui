@@ -1,9 +1,9 @@
-package contact.model;
+package model;
 
 import java.util.Comparator;
 import java.util.UUID;
 
-import contact.model.Contact.Fields;
+import model.Contact.Fields;
 
 public class ContactComparator implements Comparator<UUID>{
 	private ContactList list;

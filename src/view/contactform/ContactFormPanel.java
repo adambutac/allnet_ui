@@ -1,4 +1,4 @@
-package contact.view;
+package view.contactform;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -7,8 +7,8 @@ import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import contact.model.Contact;
 import generic.InputForm;
+import model.Contact;
 
 public class ContactFormPanel extends JPanel{
 	private static final long serialVersionUID = -94862076311994607L;

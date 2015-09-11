@@ -1,4 +1,4 @@
-package contact;
+package model;
 
 public class AHRA {
 	public static final String SPEC_CHAR_WHITELIST = "0123456789abcdefghijklmnopqrstuvwxyz@_-";

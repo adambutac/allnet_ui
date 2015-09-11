@@ -1,4 +1,4 @@
-package contact.model;
+package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
-import contact.AHRA;
-import contact.model.Contact.Fields;
-
+import model.Contact.Fields;
 /**
  * A hashmap of contacts.
  * Supplies convenience methods to add, get, edit, and remove contacts.

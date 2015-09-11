@@ -1,8 +1,6 @@
-package contact.model;
+package model;
 
 import java.util.UUID;
-
-import contact.AHRA;
 
 /**
  * Lets start with the very basics...
@@ -124,12 +122,12 @@ public class Contact {
 	
 	@Override
 	public String toString(){
-		String sep = "&";
+		String sep = "|";
 		return "User="  + userName + sep
 			 + "Name="  + fullName + sep
 			 + "Group=" + group	   + sep
 			 + "AHRA="  + ahra     + sep
-			 + "UUID="  + uid      + sep
-			 + "Phone=" + phoneNum;
+			 + "Phone=" + phoneNum + sep
+			 + "UUID="  + uid;
 	}
 }
