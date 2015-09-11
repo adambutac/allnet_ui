@@ -7,8 +7,8 @@ import java.awt.event.FocusListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import generic.InputForm;
 import model.Contact;
+import view.InputForm;
 
 public class ContactFormPanel extends JPanel{
 	private static final long serialVersionUID = -94862076311994607L;

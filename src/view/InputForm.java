@@ -1,4 +1,4 @@
-package generic;
+package view;
 
 import java.awt.event.FocusListener;
 import java.util.HashMap;
