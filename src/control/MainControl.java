@@ -17,12 +17,12 @@ import model.AHRA;
 import model.Contact;
 import model.Contact.Fields;
 import model.ContactList;
-import view.MainPanel;
-import view.contactform.ContactFormMP;
+import view.Page;
 import view.contactform.ContactFormMenu;
+import view.contactform.ContactFormPage;
 import view.contactform.ContactFormPanel;
-import view.contactlist.ContactListMP;
 import view.contactlist.ContactListMenu;
+import view.contactlist.ContactListPage;
 import view.contactlist.ContactListPanel;
 import view.contactlist.ContactWidget;
 
@@ -88,7 +88,7 @@ public class MainControl {
 	public class AddContactListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			switchView(cfmp);
+			switchView(cfPage);
 			//System.out.println("Switch to new contact form.");
 		}
 	}
@@ -96,7 +96,7 @@ public class MainControl {
 	public class SearchContactListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			switchView(cfmp);
+			switchView(cfPage);
 			//System.out.println("Search contact button press.");
 		}
 	}
@@ -117,20 +117,20 @@ public class MainControl {
 	public class ContactFormSubmitListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			ContactFormPanel cfp = cfmp.getContent();
-			ContactListPanel clp = clmp.getContent();
-			String sAhra = cfp.getFieldText(Contact.Fields.AHRA);
-			String uname = cfp.getFieldText(Contact.Fields.USER_NAME);
-			String fname = cfp.getFieldText(Contact.Fields.FULL_NAME);
-			String group = cfp.getFieldText(Contact.Fields.GROUP);
+			ContactFormPanel cfPanel = cfPage.getContent();
+			ContactListPanel clPanel = clPage.getContent();
+			String sAhra = cfPanel.getFieldText(Contact.Fields.AHRA);
+			String uname = cfPanel.getFieldText(Contact.Fields.USER_NAME);
+			String fname = cfPanel.getFieldText(Contact.Fields.FULL_NAME);
+			String group = cfPanel.getFieldText(Contact.Fields.GROUP);
 			if(AHRA.validate(sAhra)){
 				AHRA ahra = new AHRA(sAhra);
 				Contact c = new Contact(ahra, group, uname, fname);
 				cList.addContact(c);
-				final ContactWidget widget = clp.addContact(c, Fields.AHRA);
+				final ContactWidget widget = clPanel.addContact(c, Fields.AHRA);
 				System.out.println("Submit: " + c);
-				switchView(clmp);
-				((ContactFormPanel) cfmp.getContent()).reset();
+				switchView(clPage);
+				((ContactFormPanel) cfPage.getContent()).reset();
 				(new Thread(){
 					@Override
 					public void run(){
@@ -145,8 +145,8 @@ public class MainControl {
 	public class ContactFormCancelListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent arg0){
-			switchView(clmp);
-			((ContactFormPanel) cfmp.getContent()).reset();
+			switchView(clPage);
+			((ContactFormPanel) cfPage.getContent()).reset();
 		}
 	}
 	
@@ -157,8 +157,8 @@ public class MainControl {
 	/* Define data. */
 	private ContactList cList;
 	/* Define views. */
-	private ContactListMP clmp;
-	private ContactFormMP cfmp;
+	private ContactListPage clPage;
+	private ContactFormPage cfPage;
 	private JPanel mainPanel;
 	private JPanel currentView;
 
@@ -171,13 +171,13 @@ public class MainControl {
 		genBrute();
 		
 		/* Initialize views. */
-		clmp = new ContactListMP(cList);
-		cfmp = new ContactFormMP();
+		clPage = new ContactListPage(cList);
+		cfPage = new ContactFormPage();
 		
-		ContactListPanel widgetPanel = clmp.getContent();
-		ContactListMenu widgetMenu = clmp.getMenu();
-		ContactFormPanel formPanel = cfmp.getContent();
-		ContactFormMenu formMenu = cfmp.getMenu();
+		ContactListPanel widgetPanel = clPage.getContent();
+		ContactListMenu widgetMenu = clPage.getMenu();
+		ContactFormPanel formPanel = cfPage.getContent();
+		ContactFormMenu formMenu = cfPage.getMenu();
 		
 		/* Set listeners. */
 		/* WidgetListener is no longer global.
@@ -196,11 +196,11 @@ public class MainControl {
 		formMenu.addSubmitButtonListener(submitListener);
 		formMenu.addCancelButtonListener(cancelListener);
 		/* Set current view to the contact list. */
-		currentView = clmp;
-		clmp.setVisible(true);
-		cfmp.setVisible(false);
-		mainPanel.add(clmp);
-		mainPanel.add(cfmp);
+		currentView = clPage;
+		clPage.setVisible(true);
+		cfPage.setVisible(false);
+		mainPanel.add(clPage);
+		mainPanel.add(cfPage);
 		mainPanel.setPreferredSize(new Dimension(200,400));
 	}
 	
@@ -256,7 +256,7 @@ public class MainControl {
 	public static void main(String[] args){
 		JFrame frame = new JFrame();
 		ContactList list = new ContactList();
-		MainPanel view = new MainPanel();
+		Page view = new Page();
 		MainControl ctrl = new MainControl(list, view);
 		frame.add(view);
 		frame.setResizable(false);

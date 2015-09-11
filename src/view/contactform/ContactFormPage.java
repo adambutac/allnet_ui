@@ -2,12 +2,12 @@ package view.contactform;
 
 import javax.swing.JFrame;
 
-import view.MainPanel;
+import view.Page;
 
-public class ContactFormMP extends MainPanel{
+public class ContactFormPage extends Page{
 	private static final long serialVersionUID = -276328754070774145L;
 
-	public ContactFormMP(){
+	public ContactFormPage(){
 		super(new ContactFormPanel(), new ContactFormMenu());
 		this.add(this.content);
 		this.add(this.menu);
@@ -26,7 +26,7 @@ public class ContactFormMP extends MainPanel{
 	
 	public static void main(String[] args){
 		JFrame frame = new JFrame();
-		ContactFormMP view = new ContactFormMP();
+		ContactFormPage view = new ContactFormPage();
 		frame.add(view);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();

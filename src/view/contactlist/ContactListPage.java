@@ -7,13 +7,13 @@ import javax.swing.JScrollPane;
 
 import model.Contact;
 import model.ContactList;
-import view.MainPanel;
+import view.Page;
 
-public class ContactListMP  extends MainPanel{
+public class ContactListPage  extends Page{
 	private static final long serialVersionUID = 8873801039544617655L;
 	private JScrollPane scrollClp;
 	
-	public ContactListMP(ContactList cl){
+	public ContactListPage(ContactList cl){
 		super(new ContactListPanel(cl), new ContactListMenu());
 		/* A seperate scroll pane is used 
 		 * to hold the contacts panel. */
@@ -42,7 +42,7 @@ public class ContactListMP  extends MainPanel{
 		for(int i = 0; i < 64; i++)	
 			list.addContact(new Contact());
 
-		ContactListMP view = new ContactListMP(list);
+		ContactListPage view = new ContactListPage(list);
 		frame.add(view);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();

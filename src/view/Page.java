@@ -6,27 +6,27 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-public class MainPanel extends JPanel{
+public class Page extends JPanel{
 	private static final long serialVersionUID = -8668618688820184387L;	
 	private final Color mainBg = new Color(0,0,0);
 	protected JComponent content;
 	protected MenuPanel menu;
 	
-	public MainPanel(){
+	public Page(){
 		content = null;
 		menu = null;
 		this.setBackground(mainBg);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	
-	public MainPanel(MainPanel mp){
-		content = mp.getContent();
-		menu = mp.getMenu();
+	public Page(Page p){
+		content = p.getContent();
+		menu = p.getMenu();
 		this.setBackground(mainBg);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	
-	public MainPanel(JComponent jp, MenuPanel mp){
+	public Page(JComponent jp, MenuPanel mp){
 		content = jp;
 		menu = mp;
 		this.setBackground(mainBg);
